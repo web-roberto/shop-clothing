@@ -16,6 +16,10 @@ const SignUpForm = () => {
     const {displayName,email,password,confirmPassword}=formFields;
     console.log('--> SignUpForm', formFields)
 
+    const resetFormFields=()=>{
+        setFormFields(defaultFormFields)
+    }
+
     const handleSubmmit=async(event)=>{
         event.preventDefault()
         if(password !==confirmPassword) {
@@ -27,6 +31,7 @@ const SignUpForm = () => {
             const {user} = await createAuthUserWithEmailAndPassword(email, password)
             console.log('--> handleSubmmit: user is: ',user)
             await createUserDocumentFromAuth(user,{displayName})
+            resetFormFields()
 
         } catch (error) {
             if (error.code==='auth/email-already-in-use') {
