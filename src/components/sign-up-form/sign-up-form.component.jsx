@@ -1,8 +1,12 @@
-import { useState } from "react"
+import { useState,
+    //I use Listener instead:    useContext 
+    } from "react"
 import FormInput from "../form-input/form-input.component"
 import { createAuthUserWithEmailAndPassword,createUserDocumentFromAuth} from "../../utils/firebase/firebase.utils" 
 import './sign-up-form.styles.scss'
 import Button from "../button/button.component"
+//I use Listener instead:import { UserContext } from "../../contexts/user.context"
+
 
 const defaultFormFields={
     displayName:'',
@@ -14,6 +18,8 @@ const defaultFormFields={
 const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields)
     const {displayName,email,password,confirmPassword}=formFields;
+    //I use Listener instead. :const {setCurrentUser} = useContext(UserContext)
+
     console.log('--> SignUpForm', formFields)
 
     const resetFormFields=()=>{
@@ -30,6 +36,7 @@ const SignUpForm = () => {
             //Firebase returns always the same structure no matters the authentication method
             const {user} = await createAuthUserWithEmailAndPassword(email, password)
             console.log('--> handleSubmmit: user is: ',user)
+            //I use Listener instead :setCurrentUser(user)
             await createUserDocumentFromAuth(user,{displayName})
             resetFormFields()
 

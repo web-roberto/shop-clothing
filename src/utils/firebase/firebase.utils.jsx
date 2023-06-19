@@ -2,7 +2,9 @@ import {initializeApp} from 'firebase/app'// Import the functions you need from 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-import {getAuth, signInWithRedirect, signInWithPopup,GoogleAuthProvider,createUserWithEmailAndPassword , signInWithEmailAndPassword} from 'firebase/auth'
+import {getAuth, signInWithRedirect,signOut, signInWithPopup,GoogleAuthProvider,
+    createUserWithEmailAndPassword , signInWithEmailAndPassword, onAuthStateChanged
+} from 'firebase/auth'
 // Your web app's Firebase configuration
 
 //The DATABASE
@@ -37,7 +39,7 @@ export const createUserDocumentFromAuth = async(userAuth,additionalInformation={
 
     if (!userAuth) return;
     //1st I get de Ref (id of the Document)
-    const userDocRef =doc(db,'users/'.concat('',userAuth.uid.toString())) //Firebase v9.22
+    const userDocRef =doc(db,'users/'.concat('',userAuth.uid)) //Firebase v9.22
     //2nd after getting the id of the Document, I read the document
     const userSnapshot = await getDoc(userDocRef)
     //To know if a document exists:
@@ -68,3 +70,7 @@ export const signInAuthUserWithEmailAndPassword=async(email, password)=>{
     if (!email||!password) return;
     return await signInWithEmailAndPassword(auth, email, password)
 }
+export const signOutUser=async ()=>await signOut(auth)
+
+//when auth changes the callback function will be executed
+export const onAuthStateChangedListener =(callback)=> onAuthStateChanged(auth,callback)

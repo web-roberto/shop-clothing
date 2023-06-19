@@ -1,4 +1,6 @@
-import { useState } from "react"
+import { useState,
+//I use Listener instead:    useContext 
+} from "react"
 import FormInput from "../form-input/form-input.component"
 import { 
     // to REDIRECT: createAuthUserWithEmailAndPassword,
@@ -9,6 +11,7 @@ import {
 
 import './sign-in-form.styles.scss'
 import Button from "../button/button.component"
+//I use Listener instead: import { UserContext } from "../../contexts/user.context"
 
 const defaultFormFields={
     email:'',
@@ -19,6 +22,7 @@ const defaultFormFields={
 const SignInForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields)
     const {email,password}=formFields;
+    //I use Listener instead: const {setCurrentUser} = useContext(UserContext)
     //console.log('--> SignUpForm', formFields)
 
     const resetFormFields=()=>{
@@ -27,8 +31,9 @@ const SignInForm = () => {
     const signInWithGoogle =async ()=>{
         //returns all mi info from Google and even the access_token from Firebase
         const {user} = await signInWithGooglePopup()
+        //I use Listener instead: setCurrentUser(user)
         //console.log(response)
-         await createUserDocumentFromAuth({user})
+        //I use Listener instead I put it in user.context.jsx:  await createUserDocumentFromAuth({user})
       }
  
     //to REDIRECT:  <button onClick={signInWithGoogleRedirect}>Sign in with Google Redirect</button>
@@ -38,8 +43,9 @@ const SignInForm = () => {
         event.preventDefault()
       
         try {
-            const response= await signInAuthUserWithEmailAndPassword(email,password)
+            const {user}= await signInAuthUserWithEmailAndPassword(email,password)
             //console.log('--> response', response)
+           //I use Listener instead: setCurrentUser(user)
             resetFormFields();
         } catch (error) {
             switch (error.code) {
